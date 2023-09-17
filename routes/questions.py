@@ -80,14 +80,9 @@ def get_quiz_question():
 @questions.route('/get_quiz_answer', methods = ['POST'])
 def get_quiz_answer():
     data = request.get_json()
-
-    video_id = data.get('video_id')
-    time_stamp_start = data.get('time_stamp_start')
-    time_stamp_end = data.get('time_stamp_end')
     question = data.get('question')
 
-    context_by_ts_range = get_context_by_ts_range(video_id = video_id, start_ts = time_stamp_start, end_ts = time_stamp_end)
-    answer = generate_answer(context=context_by_ts_range, question=question)
+    answer = generate_answer(question = question)
 
     return jsonify({
         "answer": answer["content"],

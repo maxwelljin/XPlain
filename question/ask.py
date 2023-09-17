@@ -27,14 +27,14 @@ def generate_question(context: str) -> Tuple[str, str]:
     answer = call_gpt(role_description, prompt)
     return answer
 
-def generate_answer(context: str, question: str) -> Tuple[str, str]:
+def generate_answer(question: str) -> Tuple[str, str]:
     role_description = (
         "You’re a professor who just said the following ideas in your lecture, "
         "you just asked the question to your students"
-        "Based on your lecture content in the context, provide a detailed explaination and answer to your students"
+        "Provide a detailed answer to your students"
     )
 
-    prompt = f"# Question: {question} \n Context: {context} \n"
+    prompt = f"# Question: {question} \n"
     answer = call_gpt(role_description, prompt)
     return answer
 

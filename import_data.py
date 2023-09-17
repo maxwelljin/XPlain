@@ -1,11 +1,11 @@
 from database.database import Transcripts, TranscriptDetails, db
-from util.transcript import get_transcript_str, get_transcript_detail
+from util.transcript import get_transcript_str, get_transcript_detail, get_summarized_transcript
 
 def load_the_transcript(video_id: str):
     new_video = Transcripts(
         id=video_id,
         full_text=get_transcript_str(video_id),
-        summary="Summary",
+        summary=get_summarized_transcript(video_id)["content"],
     )
 
     db.session.add(new_video)

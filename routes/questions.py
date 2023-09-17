@@ -41,3 +41,21 @@ def post_question():
     return jsonify({
         "answer": ask(context, question_text)
     }), HTTP_200_OK
+
+@questions.route('/get_summary', methods = ['POST'])
+def post_summary():
+    data = request.get_json()
+
+    if not data:
+        return jsonify({
+            "Error": "API Invalid Input"
+        }), HTTP_400_BAD_REQUEST
+
+    video_id = data.get('video_id')
+
+    exist = Transcripts.query.filter(Transcripts.id == video_id).first()
+    print(exist)
+
+    return jsonify({
+        "answer": exist.summary
+    }), HTTP_200_OK

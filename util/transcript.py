@@ -24,12 +24,21 @@ def transcript_to_str(transcript: list) -> str:
     return str_trans
 
 
-def get_summarized_transcript(video_id: str) -> str:
+def get_summarized_transcript(video_id: str, token_size: int = 3000) -> str:
     trans_str = get_transcript_str(video_id=video_id)
+    spl_trans_str = trans_str.split()
+    appro_l = len(spl_trans_str)
+    # token_size = 3000
+    sum_round = appro_l // token_size
+    answer = ""
+    for i in range(0, sum_round, token_size):
+        text = ''.join(spl_trans_str[i: i + token_size])
+        answer_dict = call_gpt(role_description="you are a good assistant",
+                               prompt=f"Summarize the following passage: \n{text}")
+        answer += answer_dict["content"]
 
-    appro_l = len(trans_str.split())
-
-    answer_dict = call_gpt(role_description="you are a good assistant",
-                           prompt=f"Summarize the following passage: \n{trans_str}")
-    answer = answer_dict["content"]
-    return answer
+    polished_summary = call_gpt(role_description="you are a good assistant",
+                                prompt=f"Polish the following summary of a video, make it less "
+                                       f"repetitive but do not reduce and inofrmation."
+                                       f"The summary: {answer}")
+    return polished_summary

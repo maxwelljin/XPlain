@@ -6,6 +6,8 @@ sys.path.append('..')
 from database.database import db, Transcripts, TranscriptDetails
 from question.ask import ask
 from status_code.http_status_codes import HTTP_400_BAD_REQUEST, HTTP_200_OK
+from util.transcript import get_context_by_ts_range
+from question.ask import generate_question, generate_answer
 from import_data import load_the_transcript
 
 from dotenv import load_dotenv
@@ -58,4 +60,21 @@ def post_summary():
 
     return jsonify({
         "answer": exist.summary
+    }), HTTP_200_OK
+
+@questions.route('/get_quiz', methods = ['POST'])
+def get_quizz():
+    data = request.get_json()
+
+    video_id = data.get('video_id')
+    time_stamp_start = data.get('time_stamp_start')
+    time_stamp_end = data.get('time_stamp_end')
+
+    context_by_ts_range = get_context_by_ts_range(video_id = video_id, start_ts = time_stamp_start, end_ts = time_stamp_end)
+    question = generate_question(context = context_by_ts_range)
+    answer = generate_answer(context=context_by_ts_range, question=question)
+
+    return jsonify({
+        "question": question["content"],
+        "answer": answer["content"],
     }), HTTP_200_OK

@@ -42,3 +42,11 @@ def get_summarized_transcript(video_id: str, token_size: int = 3000) -> str:
                                        f"repetitive but do not reduce and inofrmation."
                                        f"The summary: {answer}")
     return polished_summary
+
+def get_context_by_ts_range(video_id: str, start_ts: float, end_ts: float) -> str:
+    detailed_context = get_transcript_detail(video_id)
+    context_str_by_ts_range = str()
+    for item in detailed_context:
+        if (item["start"] > start_ts) and (item["start"] + item["duration"] < end_ts):
+            context_str_by_ts_range = context_str_by_ts_range + item['text'].replace('\n', ' ') + ' '
+    return context_str_by_ts_range

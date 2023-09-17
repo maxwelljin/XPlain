@@ -3,7 +3,7 @@
 
 import unittest
 
-from util.transcript import get_transcript_detail, transcript_to_str, get_transcript_str, get_summarized_transcript
+from util.transcript import get_transcript_detail, transcript_to_str, get_transcript_str, get_summarized_transcript, get_context_by_ts_range
 
 
 class MyTestCaseTranscript(unittest.TestCase):
@@ -20,6 +20,11 @@ class MyTestCaseTranscript(unittest.TestCase):
     def test_get_summarized_transcript(self):
         video_id = "78vN4sO7FVU"
         summ = get_summarized_transcript(video_id=video_id)
+        print(summ)
+
+    def test_get_ts_range(self):
+        video_id = "78vN4sO7FVU"
+        summ = get_context_by_ts_range(video_id=video_id)
         print(summ)
 
 if __name__ == '__main__':
